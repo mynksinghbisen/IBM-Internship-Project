@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SocialFlow AI — Log In</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --or:#C8461A;--or-h:#b03a14;--or-lt:#fef0ea;
+  --bg:#f0e8df;--white:#fff;--text:#1c1208;--muted:#7a6f65;
+  --border:#ddd5cc;--inp:#fafaf8;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);min-height:100vh;display:flex;flex-direction:column}
+
+/* TOP BAR */
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:15px 32px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:1.1rem;font-weight:800;letter-spacing:-.3px;color:var(--text);text-decoration:none}
+.brand em{color:var(--or);font-style:normal}
+.tb-right{font-size:.84rem;color:var(--muted)}
+.tb-right a{color:var(--or);font-weight:700;text-decoration:none;margin-left:4px}
+.tb-right a:hover{text-decoration:underline}
+
+/* PAGE CENTER */
+.page{flex:1;display:flex;align-items:center;justify-content:center;padding:36px 20px}
+
+/* CARD */
+.card{background:var(--white);border-radius:20px;width:100%;max-width:420px;padding:36px 32px 30px;box-shadow:0 6px 36px rgba(0,0,0,.1);display:flex;flex-direction:column;align-items:center}
+
+/* ILLUSTRATION */
+.illus{width:190px;margin-bottom:14px}
+
+/* HEADINGS */
+.c-title{font-size:1.5rem;font-weight:800;color:var(--text);text-align:center;margin-bottom:5px}
+.c-sub{font-size:.84rem;color:var(--muted);text-align:center;margin-bottom:24px}
+
+/* FORM */
+.form{width:100%;display:flex;flex-direction:column;gap:12px}
+.iw{position:relative}
+.iw input{width:100%;padding:13px 44px 13px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--inp);font-family:'Inter',sans-serif;font-size:.88rem;color:var(--text);outline:none;transition:border-color .18s}
+.iw input:focus{border-color:var(--or);background:#fff}
+.iw input::placeholder{color:#c0b8b0}
+.eye{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#c0b8b0;display:flex;padding:0}
+.eye:hover{color:var(--muted)}
+
+.forgot{text-align:right}
+.forgot a{font-size:.83rem;font-weight:600;color:var(--or);text-decoration:none}
+.forgot a:hover{text-decoration:underline}
+
+/* CTA BUTTON */
+.cta{width:100%;padding:14px;background:var(--or);border:none;border-radius:10px;color:#fff;font-family:'Inter',sans-serif;font-size:.92rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 18px rgba(200,70,26,.32);transition:background .18s,transform .13s,box-shadow .18s;margin-top:2px}
+.cta:hover{background:var(--or-h);transform:translateY(-1px);box-shadow:0 6px 22px rgba(200,70,26,.4)}
+.cta:active{transform:translateY(0)}
+.cta:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:10px;width:100%;margin:6px 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.divider span{font-size:.75rem;color:var(--muted)}
+
+/* SWITCH LINK */
+.switch{text-align:center;font-size:.84rem;color:var(--muted)}
+.switch a{color:var(--or);font-weight:700;text-decoration:none}
+.switch a:hover{text-decoration:underline}
+
+/* MESSAGE */
+.msg{font-size:.8rem;text-align:center;padding:9px 12px;border-radius:8px;display:none}
+.msg.err{background:#fef2ee;color:#c0392b;border:1px solid #fbd5cb}
+.msg.ok{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+
+@media(max-width:480px){.card{padding:28px 18px 24px}.topbar{padding:14px 16px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="/login.html" class="brand">POSTFLOW <em>AI</em></a>
+  <div class="tb-right">New here? <a href="/signup.html">Sign Up Free →</a></div>
+</div>
+
+<div class="page">
+  <div class="card">
+
+    <!-- SVG Illustration -->
+    <svg class="illus" viewBox="0 0 340 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="170" cy="232" rx="60" ry="8" fill="#e0d4ca" opacity=".6"/>
+      <rect x="153" y="185" width="16" height="46" rx="8" fill="#222"/>
+      <rect x="173" y="185" width="16" height="46" rx="8" fill="#222"/>
+      <ellipse cx="161" cy="231" rx="14" ry="7" fill="#111"/>
+      <ellipse cx="181" cy="231" rx="14" ry="7" fill="#111"/>
+      <rect x="138" y="118" width="64" height="72" rx="16" fill="#C8461A"/>
+      <path d="M138 132 Q170 144 202 132" stroke="#b03a14" stroke-width="2" fill="none"/>
+      <rect x="110" y="120" width="32" height="16" rx="8" fill="#C8461A"/>
+      <rect x="198" y="120" width="32" height="16" rx="8" fill="#C8461A"/>
+      <rect x="94" y="88" width="16" height="50" rx="8" fill="#f4c09a" transform="rotate(-25 102 113)"/>
+      <rect x="218" y="125" width="16" height="44" rx="8" fill="#f4c09a" transform="rotate(15 226 147)"/>
+      <rect x="228" y="152" width="26" height="42" rx="5" fill="#222"/>
+      <rect x="231" y="156" width="20" height="30" rx="3" fill="#60aaff"/>
+      <circle cx="170" cy="90" r="36" fill="#f4c09a"/>
+      <path d="M134 80 Q170 44 206 80 Q200 58 170 52 Q140 58 134 80Z" fill="#2c1a0e"/>
+      <ellipse cx="134" cy="92" rx="6" ry="9" fill="#f4c09a"/>
+      <ellipse cx="206" cy="92" rx="6" ry="9" fill="#f4c09a"/>
+      <circle cx="158" cy="87" r="4" fill="#2c1a0e"/>
+      <circle cx="182" cy="87" r="4" fill="#2c1a0e"/>
+      <circle cx="159.5" cy="85.5" r="1.5" fill="white"/>
+      <circle cx="183.5" cy="85.5" r="1.5" fill="white"/>
+      <path d="M153 80 Q158 76 163 80" stroke="#2c1a0e" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M177 80 Q182 76 187 80" stroke="#2c1a0e" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M161 100 Q170 110 179 100" stroke="#c07050" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <path d="M72 78 L96 68 L96 102 L72 92Z" fill="#f59e0b"/>
+      <rect x="58" y="80" width="16" height="12" rx="3" fill="#f59e0b"/>
+      <path d="M96 72 Q110 65 96 82" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <circle cx="52" cy="52" r="26" fill="#1877F2" opacity=".95"/>
+      <text x="52" y="59" text-anchor="middle" fill="white" font-size="22" font-weight="900" font-family="serif">f</text>
+      <circle cx="296" cy="60" r="24" fill="url(#igL)" opacity=".95"/>
+      <rect x="284" y="48" width="24" height="24" rx="7" fill="none" stroke="white" stroke-width="2"/>
+      <circle cx="296" cy="60" r="7" fill="none" stroke="white" stroke-width="2"/>
+      <circle cx="303" cy="53" r="2" fill="white"/>
+      <circle cx="60" cy="158" r="22" fill="#e11d48" opacity=".92"/>
+      <path d="M60 167 L49 155 Q46 149 52 147 Q56.5 146 60 150 Q63.5 146 68 147 Q74 149 71 155Z" fill="white"/>
+      <circle cx="294" cy="155" r="22" fill="#0A66C2" opacity=".92"/>
+      <text x="294" y="163" text-anchor="middle" fill="white" font-size="14" font-weight="800" font-family="Arial">in</text>
+      <defs>
+        <radialGradient id="igL" cx="30%" cy="100%" r="150%">
+          <stop offset="0%" stop-color="#fdf497"/>
+          <stop offset="10%" stop-color="#fd5949"/>
+          <stop offset="50%" stop-color="#d6249f"/>
+          <stop offset="90%" stop-color="#285AEB"/>
+        </radialGradient>
+      </defs>
+    </svg>
+
+    <div class="c-title">Welcome Back!</div>
+    <div class="c-sub">Log in to your Postflow AI account.</div>
+
+    <form class="form" id="loginForm">
+      <div class="iw">
+        <input type="email" id="lEmail" placeholder="Work Email" autocomplete="email" required/>
+      </div>
+      <div class="iw">
+        <input type="password" id="lPass" placeholder="Password" autocomplete="current-password" required/>
+        <button type="button" class="eye" onclick="toggleEye('lPass',this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div class="forgot"><a href="#" onclick="doForgot(event)">Forgot Password?</a></div>
+      <div class="msg" id="lMsg"></div>
+      <button type="submit" class="cta" id="lBtn">Log In</button>
+    </form>
+
+    <div class="divider"><span>OR</span></div>
+    <div class="switch">Don't have an account? <a href="/signup.html">Sign up for free →</a></div>
+
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp }                            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged,
+         signInWithEmailAndPassword,
+         sendPasswordResetEmail }                   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+// ════════════════════════════════════════════════
+// 🔥  PASTE YOUR FIREBASE CONFIG HERE
+// ════════════════════════════════════════════════
+const firebaseConfig = {
+ apiKey: "AIzaSyDlpPuHabqjMpEMKmEf2-0UcavIsCv7PPE",
+    authDomain: "smpcg-6ec96.firebaseapp.com",
+    projectId: "smpcg-6ec96",
+    storageBucket: "smpcg-6ec96.firebasestorage.app",
+    messagingSenderId: "679551500401",
+    appId: "1:679551500401:web:8d989451a0b83f8d081bd0"
+};
+// ════════════════════════════════════════════════
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const $    = id => document.getElementById(id);
+
+// If already logged in → skip to dashboard
+onAuthStateChanged(auth, u => { if (u) window.location.href = '/dashboard.html'; });
+
+const EYE_OPEN  = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+const EYE_CLOSE = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+
+window.toggleEye = (id, btn) => {
+  const inp = $(id);
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.innerHTML = inp.type === 'text' ? EYE_CLOSE : EYE_OPEN;
+};
+
+function showMsg(txt, type = 'err') {
+  const el = $('lMsg');
+  el.textContent = txt; el.className = 'msg ' + type; el.style.display = 'block';
+  if (type === 'ok') setTimeout(() => el.style.display = 'none', 5000);
+}
+function clean(m) { return m.replace('Firebase: ','').replace(/\(auth\/[^)]+\)\.?/,'').trim(); }
+
+window.doForgot = async e => {
+  e.preventDefault();
+  const email = $('lEmail').value.trim();
+  if (!email) { showMsg('Enter your email first, then click Forgot Password.'); return; }
+  try {
+    await sendPasswordResetEmail(auth, email);
+    showMsg('✅ Reset email sent! Check your inbox.', 'ok');
+  } catch (err) { showMsg(clean(err.message)); }
+};
+
+$('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const email = $('lEmail').value.trim();
+  const pass  = $('lPass').value;
+  const btn   = $('lBtn');
+  btn.disabled = true; btn.textContent = 'Logging in…';
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    window.location.href = '/dashboard.html';
+  } catch (err) {
+    const m = {
+      'auth/user-not-found':     'No account found with this email.',
+      'auth/wrong-password':     'Incorrect password. Try again.',
+      'auth/invalid-credential': 'Invalid email or password.',
+      'auth/too-many-requests':  'Too many failed attempts. Please wait.',
+    };
+    showMsg(m[err.code] || 'Login failed. Check your credentials.');
+    btn.disabled = false; btn.textContent = 'LOG IN';
+  }
+});
+</script>
+</body>
+</html>
+
+
+<!-- apiKey: "AIzaSyDlpPuHabqjMpEMKmEf2-0UcavIsCv7PPE",
+    authDomain: "smpcg-6ec96.firebaseapp.com",
+    projectId: "smpcg-6ec96",
+    storageBucket: "smpcg-6ec96.firebasestorage.app",
+    messagingSenderId: "679551500401",
+    appId: "1:679551500401:web:8d989451a0b83f8d081bd0" -->

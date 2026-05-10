@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SocialFlow AI — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --or:#C8461A;--or-h:#b03a14;--or-lt:#fef0ea;
+  --mint:#d4eeea;--mint2:#bfe5e0;
+  --bg:#f5f6fa;--white:#fff;--text:#1a1208;--muted:#7a7f94;
+  --border:#e6e8f0;--inp:#f8f9fc;--sw:214px;
+  --sh:0 2px 12px rgba(0,0,0,.07);--sh-lg:0 8px 32px rgba(0,0,0,.11);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.layout{display:flex;min-height:100vh}
+
+/* ══ SIDEBAR ══ */
+.sb{
+  width:var(--sw);background:var(--white);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;
+  z-index:100;box-shadow:2px 0 10px rgba(0,0,0,.04);transition:transform .3s
+}
+.sb-logo{padding:19px 20px 15px;border-bottom:1px solid var(--border)}
+.sb-brand{font-size:1.05rem;font-weight:800;letter-spacing:-.3px;color:var(--text)}
+.sb-brand em{color:var(--or);font-style:normal}
+.sb-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:3px}
+.nav-a{
+  display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:10px;
+  text-decoration:none;color:var(--muted);font-size:.86rem;font-weight:500;transition:all .18s
+}
+.nav-a:hover{background:var(--bg);color:var(--text)}
+.nav-a.on{background:var(--or-lt);color:var(--or)}
+.nav-ic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.nav-a.on .nav-ic{background:rgba(200,70,26,.1)}
+.sb-bottom{padding:12px 10px;border-top:1px solid var(--border)}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:10px;text-decoration:none;color:var(--muted);font-size:.86rem;font-weight:500;transition:all .18s}
+.sb-link:hover{background:var(--bg);color:var(--text)}
+
+/* ══ MAIN ══ */
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column}
+.topnav{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:10
+}
+.menu-tog{display:none;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--muted)}
+.topnav-title{font-size:1.05rem;font-weight:700}
+.user-chip{
+  display:flex;align-items:center;gap:9px;background:var(--bg);border:1px solid var(--border);
+  border-radius:40px;padding:5px 14px 5px 5px;cursor:pointer
+}
+.u-av{
+  width:30px;height:30px;border-radius:50%;
+  background:linear-gradient(135deg,var(--or),#f7a05e);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;color:#fff
+}
+.u-label{font-size:.63rem;color:var(--muted);line-height:1}
+.u-name{font-size:.8rem;font-weight:600;color:var(--text);line-height:1.3}
+
+/* ══ BODY GRID ══ */
+.body-grid{display:grid;grid-template-columns:400px 1fr;flex:1;min-height:calc(100vh - 60px)}
+
+/* ══ LEFT PANEL ══ */
+.lp{background:var(--white);border-right:1px solid var(--border);padding:26px 24px;overflow-y:auto}
+.lp-head{font-size:.95rem;font-weight:700;margin-bottom:20px}
+
+/* Fields */
+.fld{margin-bottom:15px}
+.fld label{display:block;font-size:.79rem;font-weight:600;color:var(--text);margin-bottom:6px}
+.fld input,.fld textarea{
+  width:100%;background:var(--inp);border:1.5px solid var(--border);border-radius:9px;
+  color:var(--text);font-family:'Inter',sans-serif;font-size:.86rem;padding:10px 13px;
+  outline:none;transition:border-color .18s;resize:none
+}
+.fld input:focus,.fld textarea:focus{border-color:var(--or);background:#fff}
+.fld input::placeholder,.fld textarea::placeholder{color:#c2b8c0}
+
+/* Platform pills */
+.pill-row{display:flex;gap:7px;flex-wrap:wrap}
+.plat-pill{
+  display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:9px;
+  border:1.5px solid var(--border);background:var(--inp);
+  font-size:.82rem;font-weight:500;cursor:pointer;color:var(--muted);transition:all .18s
+}
+.plat-pill:hover{border-color:var(--or);color:var(--or)}
+.plat-pill.on{border-color:var(--or);background:var(--or-lt);color:var(--or)}
+.plat-pill svg{width:18px;height:18px;flex-shrink:0}
+
+/* Tone pills */
+.tone-pill{
+  padding:7px 13px;border-radius:20px;border:1.5px solid var(--border);
+  background:var(--white);font-size:.79rem;font-weight:500;cursor:pointer;
+  color:var(--muted);transition:all .18s
+}
+.tone-pill:hover{border-color:var(--or);color:var(--or)}
+.tone-pill.on{border-color:var(--or);background:var(--or);color:#fff}
+
+.div{height:1px;background:var(--border);margin:18px 0}
+
+/* Generate button */
+.gen-btn{
+  width:100%;padding:13px;background:var(--or);border:none;border-radius:10px;
+  color:#fff;font-family:'Inter',sans-serif;font-size:.92rem;font-weight:700;
+  cursor:pointer;box-shadow:0 4px 18px rgba(200,70,26,.35);
+  transition:background .18s,transform .13s,box-shadow .18s;position:relative;overflow:hidden
+}
+.gen-btn::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,255,255,.14) 0%,transparent 65%);pointer-events:none}
+.gen-btn:hover{background:var(--or-h);transform:translateY(-1px);box-shadow:0 6px 22px rgba(200,70,26,.42)}
+.gen-btn:disabled{opacity:.62;transform:none;cursor:not-allowed}
+
+/* Status */
+.status-box{display:none;margin-top:14px;background:#f7f9ff;border:1px solid #dde4f6;border-radius:9px;padding:13px 15px}
+.srow{display:flex;align-items:center;gap:9px;font-size:.8rem;color:var(--muted);padding:3px 0}
+.sdot{width:8px;height:8px;border-radius:50%;background:#dde4f6;flex-shrink:0;transition:all .3s}
+.srow.active .sdot{background:var(--or);box-shadow:0 0 6px rgba(200,70,26,.5);animation:blink 1s infinite}
+.srow.active{color:var(--text)}
+.srow.done .sdot{background:#22c55e}
+.srow.done{color:#22c55e}
+.srow.err .sdot{background:#ef4444}
+.srow.err{color:#ef4444}
+@keyframes blink{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+
+.err-box{display:none;margin-top:12px;padding:11px 14px;background:#fff5f5;border:1px solid #fecaca;border-radius:9px;font-size:.81rem;color:#dc2626}
+
+/* ══ RIGHT PANEL (MINT) ══ */
+.rp{background:var(--mint);padding:26px 24px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+.rp-head{font-size:.95rem;font-weight:700;color:var(--text)}
+
+.prev-empty{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;color:#6aada5;min-height:420px
+}
+.prev-empty .ei{font-size:3.5rem;opacity:.55}
+.prev-empty p{font-size:.86rem;font-weight:500}
+
+.prev-wrap{display:none;flex-direction:column;gap:14px;width:100%;max-width:520px}
+
+/* ─ Download + Copy row ─ */
+.action-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.act-btn{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  padding:11px 16px;border-radius:10px;font-family:'Inter',sans-serif;
+  font-size:.85rem;font-weight:600;cursor:pointer;transition:all .18s;border:none
+}
+.dl-btn{background:var(--or);color:#fff;box-shadow:0 3px 14px rgba(200,70,26,.32)}
+.dl-btn:hover{background:var(--or-h);transform:translateY(-1px);box-shadow:0 5px 18px rgba(200,70,26,.42)}
+.cp-btn{background:var(--white);color:var(--text);border:1.5px solid var(--border) !important;box-shadow:var(--sh)}
+.cp-btn:hover{border-color:var(--or) !important;color:var(--or);background:var(--or-lt)}
+.cp-btn.copied{background:#f0fdf4;color:#16a34a;border-color:#86efac !important}
+
+/* Secondary actions */
+.sec-row{display:flex;gap:9px;flex-wrap:wrap}
+.sec-btn{
+  display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);
+  border:1.5px solid var(--border);border-radius:9px;font-family:'Inter',sans-serif;
+  font-size:.8rem;font-weight:500;color:var(--text);cursor:pointer;transition:all .18s;box-shadow:var(--sh)
+}
+.sec-btn:hover{border-color:var(--or);color:var(--or);background:var(--or-lt)}
+
+/* ══ SOCIAL PREVIEW CARDS ══ */
+/* Instagram */
+.ig-card{background:#fff;border-radius:12px;box-shadow:var(--sh-lg);overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+.ig-tb{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid #f0f0f0}
+.ig-brand{display:flex;align-items:center;gap:7px}
+.ig-logo{width:26px;height:26px;border-radius:7px;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;align-items:center;justify-content:center;font-size:.75rem}
+.ig-bname{font-weight:700;font-size:.88rem;color:#111;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.ig-dots{color:#aaa;font-size:1.1rem;cursor:pointer;letter-spacing:1px}
+.ig-urow{display:flex;align-items:center;gap:9px;padding:9px 14px}
+.ig-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#f09433,#bc1888);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:#fff;border:2px solid #fff;box-shadow:0 0 0 2px #bc1888}
+.ig-un{font-weight:600;font-size:.83rem;color:#111;flex:1}
+.ig-fw{background:none;border:1px solid #0095f6;color:#0095f6;padding:4px 11px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer}
+.post-img{width:100%;aspect-ratio:1/1;display:block;object-fit:cover}
+.no-img{width:100%;height:240px;background:#f5f5f5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:#bbb;font-size:.82rem}
+.no-img span{font-size:2.5rem}
+.ig-acts{display:flex;justify-content:space-between;padding:9px 14px 5px}
+.ig-left{display:flex;gap:12px}
+.ic{font-size:1.35rem;cursor:pointer;transition:transform .12s}
+.ic:hover{transform:scale(1.12)}
+.ig-likes{padding:0 14px 3px;font-size:.8rem;font-weight:700;color:#111}
+.ig-cap{padding:2px 14px 12px;font-size:.8rem;color:#111;line-height:1.5}
+
+/* LinkedIn */
+.li-card{background:#fff;border-radius:12px;box-shadow:var(--sh-lg);overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+.li-hd{display:flex;align-items:flex-start;gap:11px;padding:14px 14px 10px}
+.li-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#0a66c2,#0d86e0);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;color:#fff;flex-shrink:0}
+.li-n{font-weight:700;font-size:.88rem;color:#111}
+.li-sub{font-size:.72rem;color:#666;margin-top:2px}
+.li-t{font-size:.7rem;color:#999;margin-top:2px}
+.li-more{margin-left:auto;color:#666;font-size:1.1rem;cursor:pointer}
+.li-body{padding:0 14px 10px;font-size:.83rem;color:#333;line-height:1.6;white-space:pre-wrap}
+.li-react{padding:7px 14px;display:flex;justify-content:space-between;font-size:.75rem;color:#666;border-top:1px solid #eee;border-bottom:1px solid #eee}
+.li-btns{display:flex}
+.li-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 4px;background:none;border:none;color:#666;font-size:.78rem;font-weight:600;cursor:pointer;border-radius:5px;transition:background .2s}
+.li-btn:hover{background:#f3f6fb}
+
+/* Twitter */
+.tw-card{background:#fff;border-radius:12px;box-shadow:var(--sh-lg);padding:15px;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+.tw-hd{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.tw-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#1d9bf0,#0d86e0);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;color:#fff;flex-shrink:0}
+.tw-nm{font-weight:700;font-size:.88rem;color:#0f1419}
+.tw-handle{font-size:.78rem;color:#536471}
+.tw-x{margin-left:auto;font-size:1.3rem;font-family:serif;color:#0f1419}
+.tw-body{font-size:.88rem;color:#0f1419;line-height:1.6;margin-bottom:10px;white-space:pre-wrap}
+.tw-img{width:100%;border-radius:12px;display:block;max-height:280px;object-fit:cover;margin-bottom:9px}
+.tw-no-img{width:100%;height:170px;background:#f7f9f9;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#bbb;margin-bottom:9px}
+.tw-time{font-size:.76rem;color:#536471;padding:7px 0;border-top:1px solid #eff3f4;border-bottom:1px solid #eff3f4;margin-bottom:4px}
+.tw-stats{display:flex;gap:16px;font-size:.78rem;color:#536471;padding:7px 0;border-bottom:1px solid #eff3f4}
+.tw-stats strong{color:#0f1419}
+.tw-acts{display:flex;gap:2px;padding-top:4px}
+.tw-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;color:#536471;font-size:.76rem;cursor:pointer;padding:7px 4px;border-radius:20px;transition:all .2s}
+.tw-btn:hover{background:rgba(29,155,240,.08);color:#1d9bf0}
+
+/* Responsive */
+@media(max-width:1060px){.body-grid{grid-template-columns:1fr}}
+@media(max-width:768px){
+  .sb{transform:translateX(-100%)}.sb.open{transform:translateX(0)}
+  .main{margin-left:0}.menu-tog{display:block}
+  .topnav,.lp,.rp{padding-left:16px;padding-right:16px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sb" id="sb">
+    <div class="sb-logo"><div class="sb-brand">POSTFLOW <em>AI</em></div></div>
+    <nav class="sb-nav">
+      <a href="/dashboard.html" class="nav-a on"><span class="nav-ic">✏️</span>Create Post</a>
+      <a href="/history.html"   class="nav-a"><span class="nav-ic">🕐</span>Post History</a>
+      <!-- <a href="/history.html"   class="nav-a"><span class="nav-ic">📄</span>Templates</a> -->
+      <!-- <a href="/settings.html"  class="nav-a"><span class="nav-ic">📊</span>Analytics</a> -->
+    </nav>
+    <div class="sb-bottom">
+      <a href="/settings.html" class="sb-link"><span>⚙️</span>Settings</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <!-- TOP NAV -->
+    <div class="topnav">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="menu-tog" onclick="document.getElementById('sb').classList.toggle('open')">☰</button>
+        <span class="topnav-title">New Post</span>
+      </div>
+      <div class="user-chip">
+        <div class="u-av" id="uAv">S</div>
+        <div><div class="u-label">Logged in as</div><div class="u-name" id="uName">User</div></div>
+      </div>
+    </div>
+
+    <div class="body-grid">
+
+      <!-- ══ LEFT: FORM ══ -->
+      <div class="lp">
+        <div class="lp-head">1. Create Your Post</div>
+
+        <div class="fld">
+          <label>Topic</label>
+          <input type="text" id="fTopic" placeholder="e.g. Organic Skincare, Tech Startup, Fitness Goals"/>
+        </div>
+
+        <div class="fld">
+          <label>Description</label>
+          <textarea id="fDesc" rows="4" placeholder="Describe your post — what message do you want to share? The more detail, the better the result."></textarea>
+        </div>
+
+        <div class="fld">
+          <label>Platform</label>
+          <div class="pill-row" id="platPills">
+            <!-- Instagram -->
+            <div class="plat-pill on" data-val="Instagram" onclick="pickPlat(this)">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs><radialGradient id="igp" cx="30%" cy="107%" r="150%"><stop offset="0%" stop-color="#fdf497"/><stop offset="5%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs>
+                <rect width="24" height="24" rx="6" fill="url(#igp)"/>
+                <rect x="6" y="6" width="12" height="12" rx="3.5" stroke="white" stroke-width="1.6" fill="none"/>
+                <circle cx="12" cy="12" r="3.2" stroke="white" stroke-width="1.5" fill="none"/>
+                <circle cx="16.3" cy="7.7" r="1" fill="white"/>
+              </svg>
+              Instagram
+            </div>
+            <!-- LinkedIn -->
+            <div class="plat-pill" data-val="LinkedIn" onclick="pickPlat(this)">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect width="24" height="24" rx="5" fill="#0A66C2"/>
+                <path d="M7.2 9.8H5V19h2.2V9.8zm-1.1-1a1.28 1.28 0 1 0 0-2.56 1.28 1.28 0 0 0 0 2.56zM19 19h-2.2v-4.6c0-1.1-.02-2.5-1.53-2.5-1.53 0-1.76 1.2-1.76 2.43V19H11.3V9.8h2.1v1.27h.03c.3-.56 1.02-1.15 2.1-1.15 2.24 0 2.65 1.47 2.65 3.4V19z" fill="white"/>
+              </svg>
+              LinkedIn
+            </div>
+            <!-- Twitter/X -->
+            <div class="plat-pill" data-val="Twitter" onclick="pickPlat(this)">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect width="24" height="24" rx="5" fill="#000"/>
+                <path d="M13.3 10.8L18.5 5H17.2L12.7 9.9 9.2 5H5l5.4 7.8L5 19h1.3l4.8-5.2 3.7 5.2H19l-5.7-8.2zm-1.5 2.3-.6-.8-4.4-6.2H8.6l3.8 5.3.6.8 4.6 6.5h-1.8l-3.9-5.6z" fill="white"/>
+              </svg>
+              Twitter / X
+            </div>
+          </div>
+        </div>
+
+        <div class="fld">
+          <label>Tone</label>
+          <div class="pill-row" id="tonePills">
+            <div class="tone-pill on"  data-val="Professional"  onclick="pickTone(this)">Professional</div>
+            <div class="tone-pill"     data-val="Witty & Funny"  onclick="pickTone(this)">Witty &amp; Funny</div>
+            <div class="tone-pill"     data-val="Inspirational"  onclick="pickTone(this)">Inspirational</div>
+            <div class="tone-pill"     data-val="Casual"         onclick="pickTone(this)">Casual</div>
+            <div class="tone-pill"     data-val="Bold"           onclick="pickTone(this)">Bold</div>
+            <div class="tone-pill"     data-val="Empathetic"     onclick="pickTone(this)">Empathetic</div>
+            <div class="tone-pill"     data-val="Educational"    onclick="pickTone(this)">Educational</div>
+            <div class="tone-pill"     data-val="Storytelling"   onclick="pickTone(this)">Storytelling</div>
+          </div>
+        </div>
+
+        <div class="div"></div>
+
+        <button class="gen-btn" id="genBtn" onclick="generate()">✨ Generate Post</button>
+
+        <div class="status-box" id="statBox">
+          <div class="srow" id="s1"><div class="sdot"></div><span>Generating image with AI…</span></div>
+          <div class="srow" id="s2"><div class="sdot"></div><span>Writing your caption…</span></div>
+          <div class="srow" id="s3"><div class="sdot"></div><span>Saving to history…</span></div>
+        </div>
+        <div class="err-box" id="errBox"></div>
+      </div>
+
+      <!-- ══ RIGHT: PREVIEW (MINT) ══ -->
+      <div class="rp">
+        <div class="rp-head">Preview</div>
+
+        <div class="prev-empty" id="prevEmpty">
+          <div class="ei">🖼️</div>
+          <p>Your generated post will appear here</p>
+        </div>
+
+        <div class="prev-wrap" id="prevWrap">
+          <!-- Post card injected here -->
+          <div id="prevCard"></div>
+
+          <!-- ── Primary: Download + Copy ── -->
+          <div class="action-row">
+            <button class="act-btn dl-btn" onclick="dlImage()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download Image
+            </button>
+            <button class="act-btn cp-btn" id="cpBtn" onclick="cpCaption()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy Caption
+            </button>
+          </div>
+
+          <!-- ── Secondary ── -->
+          <div class="sec-row">
+            <button class="sec-btn" onclick="editCaption()">✏️ Edit Caption</button>
+            <button class="sec-btn" id="regenBtn" onclick="regenImage()">🔄 Regenerate Image</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end body-grid -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<!-- Firebase + Logic -->
+<script type="module">
+import { initializeApp }                              from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged }                from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc,
+         serverTimestamp, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// ════════════════════════════════════════════════
+// 🔥  PASTE YOUR FIREBASE CONFIG HERE
+// ════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyDlpPuHabqjMpEMKmEf2-0UcavIsCv7PPE",
+    authDomain: "smpcg-6ec96.firebaseapp.com",
+    projectId: "smpcg-6ec96",
+    storageBucket: "smpcg-6ec96.firebasestorage.app",
+    messagingSenderId: "679551500401",
+    appId: "1:679551500401:web:8d989451a0b83f8d081bd0"
+};
+// ════════════════════════════════════════════════
+
+const fbApp = initializeApp(firebaseConfig);
+const auth  = getAuth(fbApp);
+const db    = getFirestore(fbApp);
+let user = null, lastImg = null, lastCap = '', lastTopic = '';
+
+const $ = id => document.getElementById(id);
+
+onAuthStateChanged(auth, u => {
+  if (!u) { window.location.href = '/'; return; }
+  user = u;
+  const n = u.displayName || u.email.split('@')[0];
+  $('uName').textContent = n;
+  $('uAv').textContent   = n[0].toUpperCase();
+});
+
+window.pickPlat = el => {
+  document.querySelectorAll('.plat-pill').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+};
+window.pickTone = el => {
+  document.querySelectorAll('.tone-pill').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+};
+const getPlat = () => document.querySelector('.plat-pill.on')?.dataset.val || 'Instagram';
+const getTone = () => document.querySelector('.tone-pill.on')?.dataset.val || 'Professional';
+
+function setS(n, state) { $('s' + n).className = 'srow ' + state; }
+
+function showErr(msg) {
+  $('errBox').textContent = '⚠️ ' + msg;
+  $('errBox').style.display = 'block';
+  $('statBox').style.display = 'none';
+}
+
+window.generate = async () => {
+  const topic = $('fTopic').value.trim();
+  const desc  = $('fDesc').value.trim();
+  const plat  = getPlat();
+  const tone  = getTone();
+  if (!topic && !desc) { showErr('Please enter a topic or description.'); return; }
+  const finalTopic = topic || desc.split(' ').slice(0, 4).join(' ');
+
+  $('genBtn').disabled = true;
+  $('genBtn').textContent = '⏳ Generating…';
+  $('statBox').style.display = 'block';
+  $('errBox').style.display = 'none';
+
+  try {
+    // ── Step 1: Image ──
+    setS(1, 'active');
+    let imgData = null;
+    try {
+      const r = await fetch('/api/generate-image', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ topic: finalTopic, description: desc, platform: plat })
+      });
+      const j = await r.json();
+      if (j.success) { imgData = j.image; setS(1, 'done'); }
+      else           { setS(1, 'err'); }
+    } catch { setS(1, 'err'); }
+
+    // ── Step 2: Caption ──
+    setS(2, 'active');
+    const cr = await fetch('/api/generate-caption', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ topic: finalTopic, description: desc, platform: plat, tone })
+    });
+    const cj = await cr.json();
+    if (!cj.success) throw new Error(cj.error);
+    const caption = cj.caption;
+    setS(2, 'done');
+
+     // ── Step 3: Preview pehle dikhao ──
+    setS(3, 'active');
+    lastImg = imgData; lastCap = caption; lastTopic = finalTopic;
+    renderPreview(plat, imgData, caption);
+    setS(3, 'done');
+
+    // ── Background mein save karo ──
+    if (user) {
+      addDoc(collection(db, 'posts'), {
+        userId: user.uid, topic: finalTopic, description: desc,
+        platform: plat, tone, caption, imageData: imgData || null,
+        createdAt: serverTimestamp()
+      }).catch(e => console.log('Save error:', e));
+
+      updateDoc(doc(db, 'users', user.uid), {
+        postsGenerated: increment(1)
+      }).catch(() => {});
+    }
+
+  } catch (err) {
+    showErr(err.message || 'Generation failed. Check your API keys and try again.');
+  } finally {
+    $('genBtn').disabled = false;
+    $('genBtn').textContent = '✨ Generate Post';
+    setTimeout(() => $('statBox').style.display = 'none', 3000);
+  }
+};
+
+function renderPreview(plat, imgData, caption) {
+  $('prevEmpty').style.display = 'none';
+  $('prevWrap').style.display = 'flex';
+  const card = $('prevCard');
+  const uname = (user?.displayName || 'user').toLowerCase().replace(/\s+/g,'_');
+  const init  = uname[0].toUpperCase();
+  const full  = user?.displayName || 'User';
+
+  const imgEl = imgData
+    ? `<img src="${imgData}" class="post-img" id="genImg" alt="Generated"/>`
+    : `<div class="no-img"><span>🖼️</span><p>Image could not be generated</p></div>`;
+
+  if (plat === 'Instagram') {
+    card.innerHTML = `
+    <div class="ig-card">
+      <div class="ig-tb">
+        <div class="ig-brand">
+          <div class="ig-logo">📷</div>
+          <span class="ig-bname">Instagram</span>
+        </div>
+        <span class="ig-dots">•••</span>
+      </div>
+      <div class="ig-urow">
+        <div class="ig-av">${init}</div>
+        <span class="ig-un">@${uname}</span>
+        <button class="ig-fw">Follow</button>
+      </div>
+      ${imgEl}
+      <div class="ig-acts">
+        <div class="ig-left">
+          <span class="ic" onclick="this.textContent=this.textContent=='🤍'?'❤️':'🤍'">🤍</span>
+          <span class="ic">💬</span><span class="ic">✈️</span>
+        </div>
+        <span class="ic">🔖</span>
+      </div>
+      <div class="ig-likes">1,234 likes</div>
+      <div class="ig-cap"><b>@${uname}</b> <span id="capSpan">${caption}</span></div>
+    </div>`;
+
+  } else if (plat === 'LinkedIn') {
+    card.innerHTML = `
+    <div class="li-card">
+      <div class="li-hd">
+        <div class="li-av">${init}</div>
+        <div>
+          <div class="li-n">${full}</div>
+          <div class="li-sub">Content Creator • Social Media Strategist</div>
+          <div class="li-t">Just now • 🌐</div>
+        </div>
+        <div class="li-more">•••</div>
+      </div>
+      <div class="li-body"><span id="capSpan">${caption}</span></div>
+      ${imgData ? `<img src="${imgData}" class="post-img" id="genImg" alt="post"/>` : `<div class="no-img" style="height:180px"><span>🖼️</span></div>`}
+      <div class="li-react"><span>👍 ❤️ 💡 &nbsp;124 reactions</span><span>23 comments</span></div>
+      <div class="li-btns">
+        <button class="li-btn">👍 Like</button>
+        <button class="li-btn">💬 Comment</button>
+        <button class="li-btn">🔁 Repost</button>
+        <button class="li-btn">📤 Send</button>
+      </div>
+    </div>`;
+
+  } else {
+    card.innerHTML = `
+    <div class="tw-card">
+      <div class="tw-hd">
+        <div class="tw-av">${init}</div>
+        <div><div class="tw-nm">${full} <span style="color:#1d9bf0">✓</span></div><div class="tw-handle">@${uname}</div></div>
+        <div class="tw-x">𝕏</div>
+      </div>
+      <div class="tw-body"><span id="capSpan">${caption}</span></div>
+      ${imgData ? `<img src="${imgData}" class="tw-img" id="genImg" alt="post"/>` : `<div class="tw-no-img">🖼️</div>`}
+      <div class="tw-time">Just now · Twitter Web App</div>
+      <div class="tw-stats"><span><strong>23</strong> Retweets</span><span><strong>5</strong> Quotes</span><span><strong>128</strong> Likes</span></div>
+      <div class="tw-acts">
+        <div class="tw-btn">💬 Reply</div>
+        <div class="tw-btn" onclick="this.style.color='#00ba7c'">🔁 Retweet</div>
+        <div class="tw-btn" onclick="this.innerHTML='❤️ Like';this.style.color='#f91880'">🤍 Like</div>
+        <div class="tw-btn">📤 Share</div>
+      </div>
+    </div>`;
+  }
+}
+
+window.cpCaption = () => {
+  const span = $('capSpan');
+  if (!span) return;
+  navigator.clipboard.writeText(span.textContent).then(() => {
+    const btn = $('cpBtn');
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Caption`;
+    }, 2500);
+  });
+};
+
+window.dlImage = () => {
+  const img = $('genImg');
+  if (!img) { alert('No image to download — generate a post first.'); return; }
+  const a = document.createElement('a');
+  a.href = img.src;
+  a.download = (lastTopic || 'socialai-post') + '.jpg';
+  a.click();
+};
+
+window.editCaption = () => {
+  const span = $('capSpan');
+  if (!span) { alert('Generate a post first.'); return; }
+  const nc = prompt('Edit your caption:', span.textContent);
+  if (nc !== null && nc.trim()) { span.textContent = nc.trim(); lastCap = nc.trim(); }
+};
+
+window.regenImage = async () => {
+  const topic = $('fTopic').value.trim() || lastTopic;
+  const desc  = $('fDesc').value.trim();
+  const plat  = getPlat();
+  if (!topic && !desc) { alert('Enter a topic first.'); return; }
+  const btn = $('regenBtn');
+  btn.textContent = '⏳ Generating…'; btn.disabled = true;
+  try {
+    const r = await fetch('/api/generate-image', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ topic: topic||desc, description: desc, platform: plat })
+    });
+    const j = await r.json();
+    if (j.success) {
+      lastImg = j.image;
+      const img = $('genImg');
+      if (img) img.src = j.image;
+    } else alert('Image generation failed: ' + j.error);
+  } catch(e) { alert('Error: ' + e.message); }
+  btn.textContent = '🔄 Regenerate Image'; btn.disabled = false;
+};
+</script>
+</body>
+</html>

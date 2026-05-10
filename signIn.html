@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SocialFlow AI — Create Account</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --or:#C8461A;--or-h:#b03a14;--or-lt:#fef0ea;
+  --bg:#f0e8df;--white:#fff;--text:#1c1208;--muted:#7a6f65;
+  --border:#ddd5cc;--inp:#fafaf8;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);min-height:100vh;display:flex;flex-direction:column}
+
+/* TOP BAR */
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:15px 32px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:1.1rem;font-weight:800;letter-spacing:-.3px;color:var(--text);text-decoration:none}
+.brand em{color:var(--or);font-style:normal}
+.tb-right{font-size:.84rem;color:var(--muted)}
+.tb-right a{color:var(--or);font-weight:700;text-decoration:none;margin-left:4px}
+.tb-right a:hover{text-decoration:underline}
+
+/* PAGE */
+.page{flex:1;display:flex;align-items:center;justify-content:center;padding:36px 20px}
+
+/* CARD */
+.card{background:var(--white);border-radius:20px;width:100%;max-width:420px;padding:34px 32px 28px;box-shadow:0 6px 36px rgba(0,0,0,.1);display:flex;flex-direction:column;align-items:center}
+
+/* SOCIAL ICONS CLUSTER */
+.icons-cluster{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;width:220px;margin-bottom:18px}
+.si{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.14);flex-shrink:0}
+.si svg{width:22px;height:22px}
+
+/* HEADINGS */
+.c-title{font-size:1.45rem;font-weight:800;color:var(--text);text-align:center;margin-bottom:5px}
+.c-sub{font-size:.84rem;color:var(--muted);text-align:center;margin-bottom:20px}
+
+/* FORM */
+.form{width:100%;display:flex;flex-direction:column;gap:11px}
+.iw{position:relative}
+.iw input{width:100%;padding:13px 44px 13px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--inp);font-family:'Inter',sans-serif;font-size:.88rem;color:var(--text);outline:none;transition:border-color .18s}
+.iw input:focus{border-color:var(--or);background:#fff}
+.iw input::placeholder{color:#c0b8b0}
+.eye{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#c0b8b0;display:flex;padding:0}
+.eye:hover{color:var(--muted)}
+
+.hint{display:flex;align-items:flex-start;gap:6px;font-size:.73rem;color:var(--muted);margin-top:-3px}
+.hint svg{flex-shrink:0;margin-top:1px}
+
+.check-row{display:flex;align-items:flex-start;gap:9px}
+.check-row input[type=checkbox]{width:16px;height:16px;margin-top:2px;accent-color:var(--or);cursor:pointer;flex-shrink:0}
+.check-row label{font-size:.8rem;color:var(--muted);line-height:1.45;cursor:pointer}
+.check-row label a{color:var(--or);font-weight:600;text-decoration:none}
+.check-row label a:hover{text-decoration:underline}
+
+/* CTA */
+.cta{width:100%;padding:14px;background:var(--or);border:none;border-radius:10px;color:#fff;font-family:'Inter',sans-serif;font-size:.92rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 18px rgba(200,70,26,.32);transition:background .18s,transform .13s,box-shadow .18s;margin-top:2px}
+.cta:hover{background:var(--or-h);transform:translateY(-1px);box-shadow:0 6px 22px rgba(200,70,26,.4)}
+.cta:active{transform:translateY(0)}
+.cta:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:10px;width:100%;margin:6px 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.divider span{font-size:.75rem;color:var(--muted)}
+
+/* SWITCH */
+.switch{text-align:center;font-size:.84rem;color:var(--muted)}
+.switch a{color:var(--or);font-weight:700;text-decoration:none}
+.switch a:hover{text-decoration:underline}
+
+/* MESSAGE */
+.msg{font-size:.8rem;text-align:center;padding:9px 12px;border-radius:8px;display:none}
+.msg.err{background:#fef2ee;color:#c0392b;border:1px solid #fbd5cb}
+.msg.ok{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+
+@media(max-width:480px){.card{padding:26px 18px 22px}.topbar{padding:14px 16px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="/login.html" class="brand">POSTFLOW <em>AI</em></a>
+  <div class="tb-right">Already have an account? <a href="/login.html">← Log In</a></div>
+</div>
+
+<div class="page">
+  <div class="card">
+
+    <!-- Social platform icons -->
+    <div class="icons-cluster">
+      <div class="si" style="background:#1877F2">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </div>
+      <div class="si" style="background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="white" stroke="none"/></svg>
+      </div>
+      <div class="si" style="background:#000">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </div>
+      <div class="si" style="background:#010101;border:1px solid #2a2a2a">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.19 8.19 0 0 0 4.79 1.53V6.77a4.85 4.85 0 0 1-1.02-.08z"/></svg>
+      </div>
+      <div class="si" style="background:#0A66C2">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      </div>
+      <div class="si" style="background:#FF0000">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.95C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#FF0000"/></svg>
+      </div>
+      <div class="si" style="background:#E60023">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+      </div>
+    </div>
+
+    <div class="c-title">Get Started Free!</div>
+    <div class="c-sub">Create your Postflow AI account in minutes.</div>
+
+    <form class="form" id="signupForm">
+      <div class="iw">
+        <input type="text" id="sName" placeholder="Full Name" autocomplete="name" required/>
+      </div>
+      <div class="iw">
+        <input type="email" id="sEmail" placeholder="Work Email" autocomplete="email" required/>
+      </div>
+      <div class="iw">
+        <input type="password" id="sPass" placeholder="Create Password" autocomplete="new-password" required/>
+        <button type="button" class="eye" onclick="toggleEye('sPass',this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div class="hint">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        Must be at least 8 characters with letters and numbers.
+      </div>
+      <div class="iw">
+        <input type="password" id="sConfirm" placeholder="Confirm Password" autocomplete="new-password" required/>
+        <button type="button" class="eye" onclick="toggleEye('sConfirm',this)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div class="check-row">
+        <input type="checkbox" id="agree"/>
+        <label for="agree">I agree to the <a href="#">Terms &amp; Privacy Policy</a></label>
+      </div>
+      <div class="msg" id="sMsg"></div>
+      <button type="submit" class="cta" id="sBtn">Create Free Account</button>
+    </form>
+
+    <div class="divider"><span>OR</span></div>
+    <div class="switch">Already have an account? <a href="/login.html">← Log in here</a></div>
+
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp }                              from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged,
+         createUserWithEmailAndPassword,
+         updateProfile }                              from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc,
+         serverTimestamp }                            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// ════════════════════════════════════════════════
+// 🔥  PASTE YOUR FIREBASE CONFIG HERE
+// ════════════════════════════════════════════════
+const firebaseConfig = {
+ apiKey: "AIzaSyDlpPuHabqjMpEMKmEf2-0UcavIsCv7PPE",
+    authDomain: "smpcg-6ec96.firebaseapp.com",
+    projectId: "smpcg-6ec96",
+    storageBucket: "smpcg-6ec96.firebasestorage.app",
+    messagingSenderId: "679551500401",
+    appId: "1:679551500401:web:8d989451a0b83f8d081bd0"
+};
+// ════════════════════════════════════════════════
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const $    = id => document.getElementById(id);
+
+// Already logged in → go to dashboard
+onAuthStateChanged(auth, u => { if (u) window.location.href = '/dashboard.html'; });
+
+const EYE_OPEN  = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+const EYE_CLOSE = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+
+window.toggleEye = (id, btn) => {
+  const inp = $(id);
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.innerHTML = inp.type === 'text' ? EYE_CLOSE : EYE_OPEN;
+};
+
+function showMsg(txt, type = 'err') {
+  const el = $('sMsg');
+  el.textContent = txt; el.className = 'msg ' + type; el.style.display = 'block';
+  if (type === 'ok') setTimeout(() => el.style.display = 'none', 5000);
+}
+function clean(m) { return m.replace('Firebase: ','').replace(/\(auth\/[^)]+\)\.?/,'').trim(); }
+
+$('signupForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const name    = $('sName').value.trim();
+  const email   = $('sEmail').value.trim();
+  const pass    = $('sPass').value;
+  const confirm = $('sConfirm').value;
+  const agreed  = $('agree').checked;
+
+  if (!name)            return showMsg('Please enter your full name.');
+  if (pass.length < 8)  return showMsg('Password must be at least 8 characters.');
+  if (pass !== confirm) return showMsg('Passwords do not match. Please re-enter.');
+  if (!agreed)          return showMsg('Please agree to the Terms & Privacy Policy to continue.');
+
+  const btn = $('sBtn');
+  btn.disabled = true; btn.textContent = 'Creating account…';
+
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await updateProfile(cred.user, { displayName: name });
+    await setDoc(doc(db, 'users', cred.user.uid), {
+      name, email, createdAt: serverTimestamp(), postsGenerated: 0
+    });
+    showMsg('✅ Account created! Redirecting to dashboard…', 'ok');
+    setTimeout(() => window.location.href = '/dashboard.html', 1400);
+  } catch (err) {
+    const m = {
+      'auth/email-already-in-use': 'This email is already registered. Try logging in.',
+      'auth/invalid-email':        'Please enter a valid email address.',
+      'auth/weak-password':        'Password is too weak. Try a stronger one.',
+    };
+    showMsg(m[err.code] || clean(err.message));
+    btn.disabled = false; btn.textContent = 'CREATE FREE ACCOUNT';
+  }
+});
+</script>
+</body>
+</html>
